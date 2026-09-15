@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: npm install -g @vscode/vsce
+    displayName: 'Install vsce'
+
+  - script: npm install
+    displayName: 'Install dependencies (if any)'
+
+  - task: AzureCLI@2
+    displayName: 'Publish to VS Code Marketplace'
+    inputs:
+      azureSubscription: 'vscode-marketplace-publish'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        vsce publish --azure-credential
