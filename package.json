@@ -2,7 +2,7 @@
   "name": "blackdoor",
   "displayName": "Blackdoor (.bd)",
   "description": "Syntax highlighting for Blackdoor .bd scripts",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "mergedeyes",
   "engines": { "vscode": "^1.75.0" },
   "categories": ["Programming Languages"],
@@ -17,7 +17,32 @@
       "language": "blackdoor",
       "scopeName": "source.blackdoor",
       "path": "./syntaxes/blackdoor.tmLanguage.json"
-    }]
+    }],
+    "configurationDefaults": {
+        "editor.tokenColorCustomizations": {
+          "textMateRules": [
+            { "scope": "keyword.control.blackdoor", "settings": { "foreground": "#DB9E45" } },
+            { "scope": "storage.type.blackdoor", "settings": { "foreground": "#DB9E45" } },
+            { "scope": "storage.type.function.blackdoor", "settings": { "foreground": "#DB9E45" } },
+
+            { "scope": "variable.other.blackdoor", "settings": { "foreground": "#b8b8b8" } },
+            { "scope": "variable.other.module.blackdoor", "settings": { "foreground": "#b8b8b8" } },
+            { "scope": "variable.other.property.blackdoor", "settings": { "foreground": "#b8b8b8" } },
+
+            { "scope": "support.function.builtin.blackdoor", "settings": { "foreground": "#9A88DD" } },
+            { "scope": "support.function.method.blackdoor", "settings": { "foreground": "#9A88DD" } },
+            { "scope": "entity.name.function.blackdoor", "settings": { "foreground": "#9A88DD" } },
+
+            { "scope": "constant.numeric.blackdoor", "settings": { "foreground": "#49B3E3" } },
+            { "scope": "string.quoted.double.blackdoor", "settings": { "foreground": "#49B3E3" } },
+            { "scope": "string.quoted.single.blackdoor", "settings": { "foreground": "#49B3E3" } },
+
+            { "scope": "string.symbol.blackdoor", "settings": { "foreground": "#9a9a9a" } },
+            { "scope": "comment.line.number-sign.blackdoor", "settings": { "foreground": "#9a9a9a" } },
+            { "scope": "constant.character.escape.blackdoor", "settings": { "foreground": "#9a9a9a" } }
+          ]
+        }
+      }
   },
   "repository": { 
     "type": "git", 
