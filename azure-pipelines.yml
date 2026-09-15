@@ -7,14 +7,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: AzureCLI@2
-    displayName: 'Get identity resource ID'
-    inputs:
-      azureSubscription: 'vscode-marketplace-publish'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az rest -u https://app.vssps.visualstudio.com/_apis/profile/profiles/me --resource 499b84ac-1321-427f-aa17-267ca6975798
   - task: NodeTool@0
     inputs:
       versionSpec: '20.x'
@@ -25,6 +17,15 @@ steps:
 
   - script: npm install
     displayName: 'Install dependencies (if any)'
+
+  - task: AzureCLI@2
+    displayName: 'Get identity resource ID'
+    inputs:
+      azureSubscription: 'vscode-marketplace-publish'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az rest -u https://app.vssps.visualstudio.com/_apis/profile/profiles/me --resource 499b84ac-1321-427f-aa17-267ca6975798
 
   - task: AzureCLI@2
     displayName: 'Publish to VS Code Marketplace'
