@@ -1,0 +1,104 @@
+{
+  "name": "Blackdoor",
+  "scopeName": "source.blackdoor",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#function-definition" },
+    { "include": "#keywords" },
+    { "include": "#declaration" },
+    { "include": "#constants" },
+    { "include": "#builtins-core" },
+    { "include": "#methods" },
+    { "include": "#module-call" },
+    { "include": "#call" },
+    { "include": "#numbers" },
+    { "include": "#variables" },
+    { "include": "#symbols" }
+  ],
+  "repository": {
+    "comments": {
+      "name": "comment.line.number-sign.blackdoor",
+      "match": "#.*$"
+    },
+    "strings": {
+      "patterns": [
+        { "include": "#string-double" },
+        { "include": "#string-single" }
+      ]
+    },
+    "string-double": {
+      "name": "string.quoted.double.blackdoor",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "name": "constant.character.escape.blackdoor", "match": "\\\\." }
+      ]
+    },
+    "string-single": {
+      "name": "string.quoted.single.blackdoor",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        { "name": "constant.character.escape.blackdoor", "match": "\\\\." }
+      ]
+    },
+    "function-definition": {
+      "match": "\\b(func)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "storage.type.function.blackdoor" },
+        "2": { "name": "entity.name.function.blackdoor" }
+      }
+    },
+    "keywords": {
+      "name": "keyword.control.blackdoor",
+      "match": "\\b(if|else|elif|while|for|in|return|break|continue|import|func|and|or|not)\\b"
+    },
+    "declaration": {
+      "match": "\\b(var)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "storage.type.blackdoor" },
+        "2": { "name": "variable.other.blackdoor" }
+      }
+    },
+    "constants": {
+      "name": "constant.language.blackdoor",
+      "match": "\\b(true|false|null|none)\\b"
+    },
+    "builtins-core": {
+      "name": "support.function.builtin.blackdoor",
+      "match": "\\b(log|print|exit|len|int|str|type|args)\\b"
+    },
+    "methods": {
+      "match": "\\.([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+      "captures": { "1": { "name": "support.function.method.blackdoor" } }
+    },
+    "module-call": {
+      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\.([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+      "captures": {
+        "1": { "name": "variable.other.module.blackdoor" },
+        "2": { "name": "entity.name.function.blackdoor" }
+      }
+    },
+    "call": {
+      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+      "captures": { "1": { "name": "entity.name.function.blackdoor" } }
+    },
+    "numbers": {
+      "name": "constant.numeric.blackdoor",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    },
+    "property": {
+      "match": "\\.([A-Za-z_][A-Za-z0-9_]*)\\b(?!\\s*\\()",
+      "captures": { "1": { "name": "variable.other.property.blackdoor" } }
+    },
+    "variables": {
+      "name": "variable.other.blackdoor",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+    },
+      "symbols": {
+        "name": "string.symbol.blackdoor",
+        "match": "(\\.|\\,|\\:|\\;|\\(|\\)|\\{|\\}|\\[|\\]|\\<|\\>|\\=|\\+|-|==|!=|<=|>=|<|>|=|\\*|/|%)"
+    }
+  }
+}

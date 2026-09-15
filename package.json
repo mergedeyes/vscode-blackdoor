@@ -1,0 +1,26 @@
+{
+  "name": "blackdoor",
+  "displayName": "Blackdoor (.bd)",
+  "description": "Syntax highlighting for Blackdoor .bd scripts",
+  "version": "0.0.1",
+  "publisher": "mergedeyes",
+  "engines": { "vscode": "^1.75.0" },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [{
+      "id": "blackdoor",
+      "aliases": ["Blackdoor", "bd"],
+      "extensions": [".bd"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "blackdoor",
+      "scopeName": "source.blackdoor",
+      "path": "./syntaxes/blackdoor.tmLanguage.json"
+    }]
+  },
+  "repository": { 
+    "type": "git", 
+    "url": "https://github.com/mergedeyes/vscode-blackdoor"
+  }
+}
