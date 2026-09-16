@@ -1,6 +1,8 @@
 # Publishes to the VS Code Marketplace when a version tag (v1.2.3) is pushed.
 # Release flow: bump "version" in package.json, commit, then
 #   git tag v1.2.3 && git push origin v1.2.3
+# vsce runs the "vscode:prepublish" script (npm run compile) itself, so the
+# TypeScript is built during publish; we only need the dependencies installed.
 
 trigger:
   branches:
@@ -27,6 +29,14 @@ steps:
     inputs:
       versionSpec: '20.x'
     displayName: Install Node.js
+
+  # npm ci needs package-lock.json; fall back to npm install if it isn't committed yet.
+  - script: |
+      if [ -f package-lock.json ]; then npm ci; else npm install; fi
+    displayName: Install dependencies
+
+  - script: npm run compile
+    displayName: Compile (fails the build on a type error before publishing)
 
   - script: |
       tag="${BUILD_SOURCEBRANCH#refs/tags/v}"

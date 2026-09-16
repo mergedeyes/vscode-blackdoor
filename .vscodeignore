@@ -1,9 +1,14 @@
 .git/**
 .github/**
 .vscode/**
+src/**
+node_modules/**
+tsconfig.json
 .gitignore
 azure-pipelines.yml
 examples/**
 test/**
 ROADMAP.md
+CHANGELOG.md
+**/*.map
 *.vsix
