@@ -69,7 +69,6 @@ The extension has a TypeScript build (grammar and colors stay declarative).
 ## Known limitations
 
 - No diagnostics or go-to-definition yet, and no per-variable type deduction (see [ROADMAP.md](https://github.com/mergedeyes/vscode-blackdoor/blob/main/ROADMAP.md))
-- Scripts still have to be copied into the game manually
 
 ## Credits
 
