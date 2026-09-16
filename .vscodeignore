@@ -1,3 +1,9 @@
-.git
+.git/**
+.github/**
+.vscode/**
 .gitignore
+azure-pipelines.yml
+examples/**
+test/**
+ROADMAP.md
 *.vsix

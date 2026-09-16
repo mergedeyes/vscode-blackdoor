@@ -1,0 +1,29 @@
+# Grammar smoke test. Open in VS Code and check the colors,
+# or run "Developer: Inspect Editor Tokens and Scopes" on a token.
+import utils as u
+var target = get_param("target", "10.0.0.5")
+var info = parse_target(target)
+
+func try_login(conn, user):
+    var res = crack(conn, user)
+    while not res.success and res.progress < 100:
+        res = crack(conn, user)
+    return res
+
+var conn = connect(info.host, 22)
+if conn.success == true:
+    for f in list_files(conn, "/home"):
+        log("file: " + f.name + " # not a comment")
+        # property named like a builtin must stay a variable
+        if f.type != "dir" and f.name.ends_with('.log'):
+            scrub_log(conn, f.path, get_my_ip())
+    var save = {"a": 1.5, 'b': [1, 2, null]}
+    u.helper(save)
+    count += 1
+    x = 1 << 2 ^ ~flags & mask | bits
+elif conn.ssh_denied:
+    log("denied\n")
+else:
+    exit()
+var broken = "unterminated string must not leak
+var after = 1

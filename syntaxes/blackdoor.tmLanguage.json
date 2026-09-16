@@ -1,20 +1,21 @@
 {
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Blackdoor",
   "scopeName": "source.blackdoor",
   "patterns": [
     { "include": "#comments" },
     { "include": "#strings" },
-    { "include": "#function-definition" },
     { "include": "#keywords" },
-    { "include": "#declaration" },
     { "include": "#constants" },
-    { "include": "#builtins-core" },
-    { "include": "#methods" },
-    { "include": "#module-call" },
-    { "include": "#call" },
     { "include": "#numbers" },
+    { "include": "#builtins" },
+    { "include": "#api" },
+    { "include": "#methods" },
+    { "include": "#calls" },
+    { "include": "#properties" },
     { "include": "#variables" },
-    { "include": "#symbols" }
+    { "include": "#operators" },
+    { "include": "#punctuation" }
   ],
   "repository": {
     "comments": {
@@ -22,83 +23,62 @@
       "match": "#.*$"
     },
     "strings": {
-      "patterns": [
-        { "include": "#string-double" },
-        { "include": "#string-single" }
-      ]
-    },
-    "string-double": {
-      "name": "string.quoted.double.blackdoor",
-      "begin": "\"",
-      "end": "\"",
+      "name": "string.quoted.blackdoor",
+      "begin": "([\"'])",
+      "end": "\\1|$",
       "patterns": [
         { "name": "constant.character.escape.blackdoor", "match": "\\\\." }
       ]
-    },
-    "string-single": {
-      "name": "string.quoted.single.blackdoor",
-      "begin": "'",
-      "end": "'",
-      "patterns": [
-        { "name": "constant.character.escape.blackdoor", "match": "\\\\." }
-      ]
-    },
-    "function-definition": {
-      "match": "\\b(func)\\s+([A-Za-z_][A-Za-z0-9_]*)",
-      "captures": {
-        "1": { "name": "storage.type.function.blackdoor" },
-        "2": { "name": "entity.name.function.blackdoor" }
-      }
     },
     "keywords": {
-      "name": "keyword.control.blackdoor",
-      "match": "\\b(if|else|elif|while|for|in|return|break|continue|import|func|and|or|not)\\b"
-    },
-    "declaration": {
-      "match": "\\b(var)\\s+([A-Za-z_][A-Za-z0-9_]*)",
-      "captures": {
-        "1": { "name": "storage.type.blackdoor" },
-        "2": { "name": "variable.other.blackdoor" }
-      }
+      "patterns": [
+        { "name": "keyword.control.blackdoor", "match": "\\b(if|elif|else|while|for|return|break|continue|import|as)\\b" },
+        { "name": "keyword.operator.word.blackdoor", "match": "\\b(and|or|not|in)\\b" },
+        { "name": "storage.type.blackdoor", "match": "\\b(var|func)\\b" }
+      ]
     },
     "constants": {
       "name": "constant.language.blackdoor",
-      "match": "\\b(true|false|null|none)\\b"
-    },
-    "builtins-core": {
-      "name": "support.function.builtin.blackdoor",
-      "match": "\\b(log|print|exit|len|int|str|type|args)\\b"
-    },
-    "methods": {
-      "match": "\\.([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
-      "captures": { "1": { "name": "support.function.method.blackdoor" } }
-    },
-    "module-call": {
-      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\.([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
-      "captures": {
-        "1": { "name": "variable.other.module.blackdoor" },
-        "2": { "name": "entity.name.function.blackdoor" }
-      }
-    },
-    "call": {
-      "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
-      "captures": { "1": { "name": "entity.name.function.blackdoor" } }
+      "match": "\\b(true|false|null)\\b"
     },
     "numbers": {
       "name": "constant.numeric.blackdoor",
       "match": "\\b\\d+(\\.\\d+)?\\b"
     },
-    "property": {
-      "match": "\\.([A-Za-z_][A-Za-z0-9_]*)\\b(?!\\s*\\()",
-      "captures": { "1": { "name": "variable.other.property.blackdoor" } }
+    "builtins": {
+      "name": "support.function.builtin.blackdoor",
+      "match": "(?<!\\.)\\b(log|range|len|str|int|type|get_param|parse_target|exit)\\b(?=\\s*\\()"
+    },
+    "api": {
+      "name": "support.function.api.blackdoor",
+      "match": "(?<!\\.)\\b(scan|connect|disconnect|get_target|resolve_hostname|traces|get_security|probe_vuln|exploit_vuln|probe_firewall|bypass_firewall|crack|brute_web|local_crack|su|get_users|list_files|read_file|write_file|download|delete_file|file_size|upload|wget|get_trace_time|get_noise|get_cpu|get_my_ip|whoami|get_hostname|sleep|get_time|get_detection|my_files|read_local|save|write_local|local_mkdir|local_cp|local_mv|local_rm|file_type|pivot|pivot_clear|scrub_log|decrypt|detect_encryption|is_honeypot|extract_ips|extract_emails|extract_urls|extract_credentials|fast_bypass|grab_hash|hash_distance|hash_string|random_char|to_char|set_char|probe_layer|chip_layer|sqli|cmd_inject|browse|click|fill_form|submit_form|find_links|find_forms|smtp_connect|smtp_login|smtp_read|smtp_send)\\b(?=\\s*\\()"
+    },
+    "methods": {
+      "match": "(\\.)\\s*([A-Za-z_]\\w*)(?=\\s*\\()",
+      "captures": {
+        "1": { "name": "punctuation.accessor.blackdoor" },
+        "2": { "name": "support.function.method.blackdoor" }
+      }
+    },
+    "calls": {
+      "name": "entity.name.function.blackdoor",
+      "match": "\\b[A-Za-z_]\\w*(?=\\s*\\()"
+    },
+    "properties": {
+      "name": "variable.other.property.blackdoor",
+      "match": "(?<=\\.)[A-Za-z_]\\w*\\b"
     },
     "variables": {
       "name": "variable.other.blackdoor",
-      "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+      "match": "\\b[A-Za-z_]\\w*\\b"
     },
-      "symbols": {
-        "name": "string.symbol.blackdoor",
-        "match": "(\\.|\\,|\\:|\\;|\\(|\\)|\\{|\\}|\\[|\\]|\\<|\\>|\\=|\\+|-|==|!=|<=|>=|<|>|=|\\*|/|%)"
+    "operators": {
+      "name": "keyword.operator.blackdoor",
+      "match": "<<|>>|[-+*/%<>!=]=?|[?^~&|]"
+    },
+    "punctuation": {
+      "name": "punctuation.blackdoor",
+      "match": "[.,:;()\\[\\]{}]"
     }
   }
 }

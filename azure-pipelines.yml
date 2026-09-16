@@ -1,37 +1,59 @@
+# Publishes to the VS Code Marketplace when a version tag (v1.2.3) is pushed.
+# Release flow: bump "version" in package.json, commit, then
+#   git tag v1.2.3 && git push origin v1.2.3
+
 trigger:
   branches:
+    exclude:
+      - '*'
+  tags:
     include:
-      - main
+      - v*
+
+pr: none
+
+parameters:
+  # One-time setup helper: prints the managed identity's Marketplace profile ID,
+  # which has to be added as a member of the publisher. Run manually with this set to true.
+  - name: showIdentityId
+    type: boolean
+    default: false
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 steps:
   - task: NodeTool@0
     inputs:
       versionSpec: '20.x'
-    displayName: 'Install Node.js'
+    displayName: Install Node.js
 
-  - script: npm install -g @vscode/vsce
-    displayName: 'Install vsce'
-
-  - script: npm install
-    displayName: 'Install dependencies (if any)'
+  - script: |
+      tag="${BUILD_SOURCEBRANCH#refs/tags/v}"
+      pkg="$(node -p "require('./package.json').version")"
+      if [ "$tag" != "$pkg" ]; then
+        echo "##vso[task.logissue type=error]Tag v$tag does not match package.json version $pkg"
+        exit 1
+      fi
+    displayName: Check tag matches package.json version
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
 
   - task: AzureCLI@2
-    displayName: 'Get identity resource ID'
+    displayName: Show identity profile ID
+    condition: ${{ parameters.showIdentityId }}
     inputs:
-      azureSubscription: 'vscode-marketplace-publish'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
+      azureSubscription: vscode-marketplace-publish
+      scriptType: bash
+      scriptLocation: inlineScript
       inlineScript: |
         az rest -u https://app.vssps.visualstudio.com/_apis/profile/profiles/me --resource 499b84ac-1321-427f-aa17-267ca6975798
 
   - task: AzureCLI@2
-    displayName: 'Publish to VS Code Marketplace'
+    displayName: Publish to VS Code Marketplace
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
     inputs:
-      azureSubscription: 'vscode-marketplace-publish'
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
+      azureSubscription: vscode-marketplace-publish
+      scriptType: bash
+      scriptLocation: inlineScript
       inlineScript: |
-        vsce publish --azure-credential
+        npx --yes @vscode/vsce@3 publish --azure-credential --skip-duplicate

@@ -4,11 +4,13 @@
   "autoClosingPairs": [
     { "open": "(", "close": ")" },
     { "open": "[", "close": "]" },
-    { "open": "\"", "close": "\"", "notIn": ["string"] }
+    { "open": "{", "close": "}" },
+    { "open": "\"", "close": "\"", "notIn": ["string", "comment"] },
+    { "open": "'", "close": "'", "notIn": ["string", "comment"] }
   ],
-  "surroundingPairs": [["(", ")"], ["[", "]"], ["\"", "\""]],
+  "surroundingPairs": [["(", ")"], ["[", "]"], ["{", "}"], ["\"", "\""], ["'", "'"]],
   "indentationRules": {
-    "increaseIndentPattern": "^\\s*(func|if|else|elif|while|for)\\b.*:\\s*$",
-    "decreaseIndentPattern": "^\\s*(else|elif)\\b.*:\\s*$"
+    "increaseIndentPattern": "^\\s*(func|if|elif|else|while|for)\\b.*:\\s*(#.*)?$",
+    "decreaseIndentPattern": "^\\s*(elif|else)\\b"
   }
 }
