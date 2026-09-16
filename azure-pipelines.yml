@@ -1,17 +1,7 @@
-# Publishes to the VS Code Marketplace when a version tag (v1.2.3) is pushed.
-# Release flow: bump "version" in package.json, commit, then
-#   git tag v1.2.3 && git push origin v1.2.3
 # vsce runs the "vscode:prepublish" script (npm run compile) itself, so the
 # TypeScript is built during publish; we only need the dependencies installed.
 
-trigger:
-  branches:
-    exclude:
-      - '*'
-  tags:
-    include:
-      - v*
-
+trigger: none # Disabled branch/tag triggers since you trigger manually
 pr: none
 
 parameters:
@@ -38,16 +28,6 @@ steps:
   - script: npm run compile
     displayName: Compile (fails the build on a type error before publishing)
 
-  - script: |
-      tag="${BUILD_SOURCEBRANCH#refs/tags/v}"
-      pkg="$(node -p "require('./package.json').version")"
-      if [ "$tag" != "$pkg" ]; then
-        echo "##vso[task.logissue type=error]Tag v$tag does not match package.json version $pkg"
-        exit 1
-      fi
-    displayName: Check tag matches package.json version
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
-
   - task: AzureCLI@2
     displayName: Show identity profile ID
     condition: ${{ parameters.showIdentityId }}
@@ -60,7 +40,7 @@ steps:
 
   - task: AzureCLI@2
     displayName: Publish to VS Code Marketplace
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/v')
+    # Condition requiring 'refs/tags/v' has been removed
     inputs:
       azureSubscription: vscode-marketplace-publish
       scriptType: bash
